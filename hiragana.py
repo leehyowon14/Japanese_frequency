@@ -26,7 +26,7 @@ try:
     for data in tqdm(dataset["train"]):
         string: str = ''
         for key in data:
-            if data[key] != '':
+            if data[key] != '' and data[key] != None:
                 string += data[key]
 
         # 모든 글자 히라가나로 바꾼 후 히라가나만 남기기

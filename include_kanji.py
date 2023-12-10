@@ -30,7 +30,7 @@ try:
     for data in tqdm(dataset["train"]):
         string: str = ''
         for key in data:
-            if data[key] != '':
+            if data[key] != '' and data[key] != None:
                 string += data[key]
         string: list = list(string)
         for i, letter in enumerate(string):
