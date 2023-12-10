@@ -16,6 +16,7 @@
 - 사용되지 않은 한자는 `Not used Kanji`로 따로 분류되어 한줄로 기록됩니다.
 - `result_kanji.txt`파일에 분석 결과를 지정합니다.
 - 프로그램 실행 도중 `CTRL + C`를 눌러 탈출하여도 분석한 만큼의 결과를 `result_kanji.txt`에 저장합니다.
+- 추후 상용한자와 표외한자만을 필터링하는 기능을 추가할 예정입니다.
 
 ---
 Developed by. leehyowon14
