@@ -43,10 +43,6 @@ try:
             total_letter_counter += 1
             hira_counter[letter] += 1
 finally:
-    for i in range(len(HIRA_LIST) - 1, 0, -2):
-        hira_counter[HIRA_LIST[i]] += hira_counter[HIRA_LIST[i - 1]]
-        del hira_counter[HIRA_LIST[i - 1]]
-
     with open("./result.txt", "wt+", encoding="UTF8") as file:
         file.write(f"---RESULT(total {total_letter_counter} letter)---\n")
         frequency: dict[int, str] = {}

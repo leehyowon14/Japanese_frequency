@@ -45,10 +45,6 @@ try:
             else:
                 kanji_counter[letter] += 1
 finally:
-    for i in range(len(HIRA_LIST) - 1, 0, -2):
-        hira_counter[HIRA_LIST[i]] += hira_counter[HIRA_LIST[i - 1]]
-        del hira_counter[HIRA_LIST[i - 1]]
-
     not_used_kanji: list[str] = []
     for key in [kanji for kanji in kanji_counter]:
         if kanji_counter[key] == 0:
