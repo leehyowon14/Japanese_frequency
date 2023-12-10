@@ -49,8 +49,14 @@ finally:
 
     with open("./result.txt", "wt+", encoding="UTF8") as file:
         file.write(f"---RESULT(total {total_letter_counter} letter)---\n")
+        frequency: dict[int, str] = {}
         for hira in hira_counter:
             file.write(f"{hira}: {hira_counter[hira]}\n")
+            frequency[hira_counter[hira]] = hira
+        
+        file.write("---Sort by frequency order---")
+        for freq in list(reversed(sorted(frequency))):
+            file.write(f"{frequency[freq]}: {freq}\n")
         file.write("---END---\n\n\n")
 
     print("Result is saved in 'result.txt'")

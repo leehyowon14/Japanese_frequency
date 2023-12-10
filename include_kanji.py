@@ -57,11 +57,21 @@ finally:
 
     with open("./result_kanji.txt", "wt+", encoding="UTF8") as file:
         file.write(f"---RESULT(total {total_letter_counter} letter)---\n")
+
+        frequency: dict[int, str] = {}
         for hira in hira_counter:
             file.write(f"{hira}: {hira_counter[hira]}\n")
+            frequency[hira_counter[hira]] = hira
+
         for kanji in kanji_counter:
             file.write(f"{kanji}: {kanji_counter[kanji]}\n")
-        file.write(f"Not used Kanji: {', '.join([kanji for kanji in not_used_kanji])}\n")
+            frequency[kanji_counter[kanji]] = kanji
+
+        file.write("---Sort by frequency order---")
+        for freq in list(reversed(sorted(frequency))):
+            file.write(f"{frequency[freq]}: {freq}\n")
+
+        file.write(f"\nNot used Kanji: {', '.join([kanji for kanji in not_used_kanji])}\n")
         file.write("---END---\n\n\n")
 
     print("Result is saved in 'result_kanji.txt'")
