@@ -63,7 +63,7 @@ finally:
             file.write(f"{kanji}: {kanji_counter[kanji]}\n")
             frequency[kanji_counter[kanji]] = kanji
 
-        file.write("---Sort by frequency order---")
+        file.write("---Sort by frequency order---\n")
         for freq in list(reversed(sorted(frequency))):
             file.write(f"{frequency[freq]}: {freq}\n")
 

@@ -50,7 +50,7 @@ finally:
             file.write(f"{hira}: {hira_counter[hira]}\n")
             frequency[hira_counter[hira]] = hira
         
-        file.write("---Sort by frequency order---")
+        file.write("---Sort by frequency order---\n")
         for freq in list(reversed(sorted(frequency))):
             file.write(f"{frequency[freq]}: {freq}\n")
         file.write("---END---\n\n\n")
