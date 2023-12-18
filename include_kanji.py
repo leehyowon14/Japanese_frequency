@@ -16,22 +16,16 @@ for hira_unicode in range(12353, 12439):
     hira_counter[hira] = 0
     HIRA_LIST.append(hira)
 
-# 싱용한자 & 표외한자 - 개수 사전 만들기
-# 상용한자 & 표외한자 유니코드 범위 : 19968 ~ 40911
-kanji_counter: dict[str, int] = {}
-for kanji_unicode in range(19968, 40911):
-    kanji_counter[chr(kanji_unicode)] = 0
-
+kanji_counter: dict[str, int] = {
+    chr(kanji_unicode): 0 for kanji_unicode in range(19968, 40911)
+}
 # 일본어 데이터셋 불러오기
 print("Start Loading Dataset...")
 dataset: Dataset = load_dataset("izumi-lab/llm-japanese-dataset", revision="main")
 print("Done.")
 try:
     for data in tqdm(dataset["train"]):
-        string: str = ''
-        for key in data:
-            if data[key] != '' and data[key] != None:
-                string += data[key]
+        string: str = ''.join(data[key] for key in data if data[key] not in ['', None])
         string: list = list(string)
         for i, letter in enumerate(string):
             string[i] = KATA_TO_HIRA.get(letter, letter)
@@ -46,7 +40,7 @@ try:
                 kanji_counter[letter] += 1
 finally:
     not_used_kanji: list[str] = []
-    for key in [kanji for kanji in kanji_counter]:
+    for key in list(kanji_counter):
         if kanji_counter[key] == 0:
             del kanji_counter[key]
             not_used_kanji.append(key)
@@ -55,19 +49,19 @@ finally:
         file.write(f"---RESULT(total {total_letter_counter} letter)---\n")
 
         frequency: dict[int, str] = {}
-        for hira in hira_counter:
-            file.write(f"{hira}: {hira_counter[hira]}\n")
+        for hira, value in hira_counter.items():
+            file.write(f"{hira}: {value}\n")
             frequency[hira_counter[hira]] = hira
 
-        for kanji in kanji_counter:
-            file.write(f"{kanji}: {kanji_counter[kanji]}\n")
+        for kanji, value_ in kanji_counter.items():
+            file.write(f"{kanji}: {value_}\n")
             frequency[kanji_counter[kanji]] = kanji
 
         file.write("---Sort by frequency order---\n")
         for freq in list(reversed(sorted(frequency))):
             file.write(f"{frequency[freq]}: {freq}\n")
 
-        file.write(f"\nNot used Kanji: {', '.join([kanji for kanji in not_used_kanji])}\n")
+        file.write(f"\nNot used Kanji: {', '.join(list(not_used_kanji))}\n")
         file.write("---END---\n\n\n")
 
     print("Result is saved in 'result_kanji.txt'")

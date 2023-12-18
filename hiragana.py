@@ -24,11 +24,7 @@ dataset: Dataset = load_dataset("izumi-lab/llm-japanese-dataset", revision="main
 print("Done.")
 try:
     for data in tqdm(dataset["train"]):
-        string: str = ''
-        for key in data:
-            if data[key] != '' and data[key] != None:
-                string += data[key]
-
+        string: str = ''.join(data[key] for key in data if data[key] not in ['', None])
         # 모든 글자 히라가나로 바꾼 후 히라가나만 남기기
         res: list = list(http_get(
             f"https://learn-language.tokyo/api/toHiraganaKanjiKatakana?text={string}&toLang=toFuriganaNormal",
@@ -46,10 +42,10 @@ finally:
     with open("./result.txt", "wt+", encoding="UTF8") as file:
         file.write(f"---RESULT(total {total_letter_counter} letter)---\n")
         frequency: dict[int, str] = {}
-        for hira in hira_counter:
-            file.write(f"{hira}: {hira_counter[hira]}\n")
+        for hira, value in hira_counter.items():
+            file.write(f"{hira}: {value}\n")
             frequency[hira_counter[hira]] = hira
-        
+
         file.write("---Sort by frequency order---\n")
         for freq in list(reversed(sorted(frequency))):
             file.write(f"{frequency[freq]}: {freq}\n")
